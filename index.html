@@ -58,7 +58,12 @@
 
         resDiv.innerHTML = data.results.map(place => `
           <div class="card">
-            <h3><a href="${place['Google Maps URL'] || '#'}" target="_blank" rel="noopener noreferrer">${place.Name}</a></h3>
+            <h3>
+  <a href="${place['Google Maps URL'] || '#'}" target="_blank" rel="noopener noreferrer">
+    ${place.Name}
+  </a>
+  ${place.Rating ? ` – ⭐ ${place.Rating} (${place["User Ratings Total"] || 0})` : ""}
+</h3>
             <p><strong>City:</strong> ${place.City || "—"}</p>
             <p><strong>Category:</strong> ${place.Category || "—"} | ${place.Type || "—"}</p>
             <p><strong>Tags:</strong> ${place.Tags || "—"}</p>
