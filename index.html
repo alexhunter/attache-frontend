@@ -68,6 +68,11 @@
             <p><strong>Category:</strong> ${place.Category || "—"} | ${place.Type || "—"}</p>
             <p><strong>Tags:</strong> ${place.Tags || "—"}</p>
             <p><strong>Note:</strong> ${place["Attaché Note"] || "—"}</p>
+            <p><em>This one was recommended by friend of Attaché 
+${place["Recommended By Link"] 
+  ? `<a href="${place["Recommended By Link"]}" target="_blank" rel="noopener noreferrer">${place["Recommended By Name"]}</a>` 
+  : place["Recommended By Name"] || ""}.
+</em></p>
             <p>${place.Website ? `<a href="${place.Website}" target="_blank">Website</a>` : ""}</p>
           </div>
         `).join("");
