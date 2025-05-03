@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Attaché Travel Assistant</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 40px auto;
+      padding: 0 1rem;
+    }
+
+    input, button {
+      font-size: 1rem;
+      padding: 10px;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 5px;
+    }
+
+    .card h3 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>Attaché Travel Assistant</h1>
+  <input type="text" id="userInput" placeholder="e.g. 48 hours in Lisbon for great coffee and cheap eats" />
+  <button onclick="sendQuery()">Go</button>
+  <div id="results"></div>
+
+  <script>
+    async function sendQuery() {
+      const input = document.getElementById("userInput").value;
+      const resDiv = document.getElementById("results");
+      resDiv.innerHTML = "Thinking...";
+
+      try {
+        const response = await fetch("https://attache-backend-odch.onrender.com/query", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: input })
+        });
+
+        const data = await response.json();
+
+        if (!data.results || data.results.length === 0) {
+          resDiv.innerHTML = "<p>No results found.</p>";
+          return;
+        }
+
+        resDiv.innerHTML = data.results.map(place => `
+          <div class="card">
+            <h3><a href="${place['Google Maps URL'] || '#'}" target="_blank" rel="noopener noreferrer">${place.Name}</a></h3>
+            <p><strong>City:</strong> ${place.City || "—"}</p>
+            <p><strong>Category:</strong> ${place.Category || "—"} | ${place.Type || "—"}</p>
+            <p><strong>Tags:</strong> ${place.Tags || "—"}</p>
+            <p><strong>Note:</strong> ${place["Attaché Note"] || "—"}</p>
+            <p>${place.Website ? `<a href="${place.Website}" target="_blank">Website</a>` : ""}</p>
+          </div>
+        `).join("");
+
+      } catch (err) {
+        console.error("❌ Frontend fetch error:", err);
+        resDiv.innerHTML = "<p>Error. Check your backend or try again.</p>";
+      }
+    }
+  </script>
+</body>
+</html>
