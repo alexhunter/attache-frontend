@@ -29,11 +29,11 @@
           ${place.image ? `<img src="${place.image}" alt="${place.name}" />` : ""}
           <h2>${place.name}</h2>
           <p class="address">${place.address || ""}</p>
-          <p class="rating">${"★".repeat(Math.floor(place.rating || 0))} (${place.reviewCount || 0} reviews)</p>
+          <p class="rating">${Number.isFinite(place.rating) ? "★".repeat(Math.floor(place.rating)) : ""} (${Number.isFinite(place.reviewCount) ? place.reviewCount : 0} reviews)</p>
           <p class="meta">${place.type || ""} ${place.price ? "&bull; " + place.price : ""}</p>
           <div class="tags">${(place.tags || []).map(t => `<span>${t}</span>`).join(" ")}</div>
           <p class="note">${place.note || ""}</p>
-          ${place.recommendedBy ? `<p class="recommended">✅ Recommended by ${place.recommendedBy}</p>` : ""}
+          ${typeof place.recommendedBy === "string" && place.recommendedBy.trim() ? `<p class="recommended">✅ Recommended by ${place.recommendedBy}</p>` : ""}
           ${place.mapsUrl ? `<a href="${place.mapsUrl}" target="_blank">View on Google Maps</a>` : ""}
         `;
         container.appendChild(card);
