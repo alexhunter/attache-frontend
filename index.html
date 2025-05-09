@@ -9,8 +9,8 @@
     let allPlaces = [];
 
     async function fetchPlaces() {
-      const city = "London"; // Replace or capture from user input if needed
-      const response = await fetch(`/api/places?category=Food&city=${city}`);
+      const city = "London";
+      const response = await fetch(`https://attache-backend-odch.onrender.com/api/places?category=Food&city=${city}`);
       const data = await response.json();
       allPlaces = data.results || [];
       renderPlaces();
